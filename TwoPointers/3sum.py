@@ -47,8 +47,9 @@ class Solution:
         nums.sort()
         i = 0
 
-        for i in range(len(nums)):
+        while i < len(nums)-1 and nums[i] <= 0:
             if i > 0 and nums[i] == nums[i-1]:
+                i += 1
                 continue
             l = i + 1
             r = len(nums)-1
@@ -69,4 +70,3 @@ class Solution:
             i += 1
 
         return result
-
