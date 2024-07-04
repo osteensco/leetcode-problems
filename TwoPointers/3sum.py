@@ -44,16 +44,23 @@ class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
         
         result = []
+        # 3sum is much simpler to solve with a sorted array
         nums.sort()
+        # we set our initial base, and then use two pointers in the rest of the array
         i = 0
-
+        
+        # our base really only needs to be negative ints or 0, since we our total sum should equal 0
         while i < len(nums)-1 and nums[i] <= 0:
+            # to avoid duplicates we increment our iterator if we are on the same value as the previous iteration
             if i > 0 and nums[i] == nums[i-1]:
                 i += 1
                 continue
+
+            # our pointers will essentially look in the sub array of nums[i+1:]
             l = i + 1
             r = len(nums)-1
             
+            # same algorithm as twoSumII (almost)
             while l < r:
                 
                 total = nums[i] + nums[l] + nums[r]
@@ -63,7 +70,10 @@ class Solution:
                     l += 1
                 else:
                     result.append([nums[i], nums[l], nums[r]])
+                    # we may still have other valid solutions from this base (nums[i])
+                    # so we iterate our left pointer
                     l += 1
+                    # however, to avoid duplicates, if the value of our left pointer is now the same as the previous one we want to keep iterating
                     while nums[l] == nums[l-1] and l < r:
                         l += 1
 
