@@ -53,31 +53,36 @@ class Solution:
         node = head
 
         # we only need the last half of the list, so 
-        # top of stack needs to be less than current node
-        # this will let us find all nodes we need to reposition
-        while node.val < stack[-1].val: 
-            # only caveat is when n is even where n = len(LinkedList)
-            # on the last iteration the next node (which is the top of our stack) will equal the current node
-            # current node will already have this next node so we skip this iteration, otherwise node.next will be set to None erroneously
-            if node.next.val == stack[-1].val:
-                break
-
-            # main algo
-
-            # set a temp variable, n
+        # grap top half of stack.
+        # this will give us all nodes we need to reposition
+        stack = stack[len(stack)//2:]
+        # isolate nodes to avoid listnode cycle (infinite pointer loop)
+        for i in stack:
+            i.next = None
+        
+        while stack:
+            # set a pointer to allow list to be split
+            # grab top of stack and set it next in list
+            # move our pointer to the next node
             n = node.next
-            # set next to node in top of stack
             node.next = stack.pop()
-            # move pointer to the next node
             node = node.next 
-            
-            # cleanup next pointer on node in top of stack to avoid listnode cycle (infinite pointer loop)
-            stack[-1].next = None
-            # set next to original next, results in us essentially inserting the node between node and node.next
-            # 1 -> 2 -> 3 results in 1 -> 3 -> 2
-            node.next = n
-            # move our pointer again if we aren't at end of list (only applies when n is odd, where n = len(LinkedList)
-            if node.next:
+
+            # when we still have nodes in our stack we 
+            # set the next node to the original next that we 
+            # pointed to with n, and then move to that node
+            if stack:
+                node.next = n
                 node = node.next
+            # if we're through our stack n will point to our current node if n is
+            # odd, where n = len(LinkedList), so to avoid
+            # an infinite linked list that points to itself, we just set next to None instead of n
+            else:
+                node.next = None
+
+
+
+
+
 
 
